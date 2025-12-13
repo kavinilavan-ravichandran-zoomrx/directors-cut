@@ -1,35 +1,42 @@
-# Technical Explanation
+# TrialSense: Technical Explanation
 
-## 1. Agent Workflow
+## The Problem
+Clinical trial matching is historically manual, time-consuming, and error-prone. Oncologists struggle to keep up with thousands of active trials, and rigid database queries fail to capture the nuance of patient eligibility criteria (e.g., "adequate organ function" or specific prior therapy sequences).
 
-Describe step-by-step how your agent processes an input:
-1. Receive user input  
-2. (Optional) Retrieve relevant memory  
-3. Plan sub-tasks (e.g., using ReAct / BabyAGI pattern)  
-4. Call tools or APIs as needed  
-5. Summarize and return final output  
+## The Solution: AI-First Pipeline
 
-## 2. Key Modules
+TrialSense uses a multi-step AI pipeline to automate this process.
 
-- **Planner** (`planner.py`): …  
-- **Executor** (`executor.py`): …  
-- **Memory Store** (`memory.py`): …  
+### 1. Unstructured Data Extraction
+The system does not require manual data entry. Instead, it accepts:
+- **Natural Language**: "55yo female with TNBC, stage IV, progressed on pembro..."
+- **Audio/Voice**: Real-time transcripts of patient consults (via OpenAI Whisper).
+- **Images**: Screenshots of medical records or pathology reports.
 
-## 3. Tool Integration
+**Technology**: Google Gemini 2.0  
+**Process**: The raw input is fed into Gemini with a strict schema prompt to extract a specialized `PatientProfile` JSON object containing normalized fields like `stage`, `histology`, `biomarkers`, and `prior_treatments`.
 
-List each external tool or API and how you call it:
-- **Search API**: function `search(query)`  
-- **Calculator**: LLM function calling  
+### 2. Intelligent Trial Retrieval
+Before costly LLM evaluation, we perform a broad search against the ClinicalTrials.gov dataset (or our local cache).
+- **Keyword Generation**: The extracted profile is analyzed to generate synonyms (e.g., "TNBC" -> "Triple Negative Breast Cancer").
+- **Filtering**: We filter by phase, recruitment status, and location to narrow down from thousands to a manageable set (e.g., top 10-20 candidates).
 
-## 4. Observability & Testing
+### 3. Semantic Eligibility Matching (The Core Innovation)
+Standard search matches keywords. TrialSense matches **logic**.
 
-Explain your logging and how judges can trace decisions:
-- Logs saved in `logs/` directory  
-- `TEST.sh` exercises main path  
+We feed the `PatientProfile` and the raw `Eligibility Criteria` text of the candidate trials into Gemini. The model acts as a reasoning engine:
+1. **Inclusion Check**: Does the patient's data satisfy the inclusion list?
+2. **Exclusion Check**: Does the patient trigger any exclusion criteria?
+3. **Logic Handling**: It understands complex conditions like "Must have received prior taxane unless contraindicated."
+4. **Scoring**: It assigns a `fit_score` (0-100) and a `fit_category` (Strong, Moderate, Weak).
+5. **Explainability**: It generates a human-readable explanation of *why* the patient matches or fails.
 
-## 5. Known Limitations
+### 4. Interactive "Modes"
+The application is structured into three distinct workflows:
 
-Be honest about edge cases or performance bottlenecks:
-- Long-running API calls  
-- Handling of ambiguous user inputs  
+- **Screener Mode**: Quick, ad-hoc matching. Paste a case, get instant results.
+- **Listener Mode**: "Ambient" agent. It runs in the background of a consult, transcribing audio. When it detects that standard of care has been exhausted (triggered by key phrases), it automatically runs a search and nudges the doctor.
+- **Chart Peek Mode**: Integration simulation. It reads from a structured EMR-like database and continuously monitors trial eligibility for existing patients, flagging new matches as they open.
 
+## Data Consistency
+Data is persisted in an SQLite database using `SQLAlchemy` ORM. This ensures that once a patient is "saved", their profile and their hand-picked trial matches are retained for future review.

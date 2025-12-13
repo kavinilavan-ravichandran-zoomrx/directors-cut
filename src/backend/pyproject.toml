@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "trialsense-backend"
+version = "1.0.0"
+description = "AI-powered clinical trial matching system backend"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "0.109.0"
+uvicorn = {extras = ["standard"], version = "0.27.0"}
+sqlalchemy = "2.0.25"
+google-generativeai = "0.3.2"
+httpx = "0.26.0"
+pydantic = "2.5.3"
+pydantic-settings = "2.1.0"
+geopy = "2.4.1"
+python-dotenv = "1.0.0"
+aiosqlite = "0.19.0"
+greenlet = "^3.3.0"
+openai = "^1.0.0"
+python-multipart = "^0.0.6"
+pillow = "^12.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+pytest-asyncio = "^0.21.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

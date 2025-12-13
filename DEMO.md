@@ -1,23 +1,27 @@
-# Demo Video
+# TrialSense Demo
 
-Please record a 3–5 minute walkthrough showing:
+## 📺 Video Walkthrough
 
-- The problem you solve  
-- End-to-end agent behavior on a representative example  
-- Highlighted “agentic” steps (planning, tool calls, memory use)
+**[Link to Demo Video](YOUR_YOUTUBE_LINK_HERE)**
 
----
+*(Please insert the actual link to your YouTube/Loom video here)*
 
-📺 **Provide a Hosted Public Video Link (YouTube unlisted / Loom / MP4):**  MUST BE ON A HOS
-https://your.video.link.here
+## ⏱️ Timestamp Highlights
 
-PLEASE DO NOT UPLOAD RAW VIDOE FILES. These submissions will not be reviewed.
+- **0:00** - **Introduction**: The problem of clinical trial matching.
+- **0:45** - **Screener Mode**: "Copy-Paste" demo. Handling complex unstructured text and getting matched trials in seconds.
+- **1:30** - **Multimodal Input**: Uploading a "medical record" image and seeing instant extraction.
+- **2:10** - **Listener Mode**: Simulating a doctor-patient conversation. Watching the AI detect "treatment failure" and triggering a search automatically.
+- **3:00** - **Chart Peek**: Reviewing a saved patient cohort and their matches.
+- **3:45** - **Technical Deep Dive**: Briefly showing the Gemini reasoning logs in the backend.
 
-### Timestamps
+## 📸 Screenshots
 
-- **00:00–00:30** — Introduction & setup  
-- **00:30–01:30** — User input → Planning step  
-- **01:30–02:30** — Tool calls & memory retrieval  
-- **02:30–03:30** — Final output & edge-case handling
+### 1. The Dashboard
+*(Place screenshot here)*
 
-- Vidoes longer than 5 minutes may not be reviewd. 
+### 2. Match Analysis
+*(Place screenshot here)*
+
+### 3. Listener Trigger
+*(Place screenshot here)*
