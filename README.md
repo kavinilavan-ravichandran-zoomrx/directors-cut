@@ -1,7 +1,7 @@
-# CliniQu 🏥
+# CliniQ 🏥
 > **AI-Powered Clinical Trial Matching Assistant** for the Agentic AI App Hackathon.
 
-CliniQu acts as an intelligent layer between oncologists and the complex world of clinical trials. By understanding unstructured patient data (text, voice, images) and the deep semantic logic of trial eligibility criteria, it finds life-saving matches that keyword searches miss.
+CliniQ acts as an intelligent layer between oncologists and the complex world of clinical trials. By understanding unstructured patient data (text, voice, images) and the deep semantic logic of trial eligibility criteria, it finds life-saving matches that keyword searches miss.
 
 ## 🚀 Key Features
 
