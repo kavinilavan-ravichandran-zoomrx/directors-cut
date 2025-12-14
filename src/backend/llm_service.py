@@ -18,6 +18,18 @@ class LLMService:
     """Service for all LLM-powered operations using Gemini"""
     
     @staticmethod
+    def _print_usage(response, operation: str):
+        """Print token usage for an LLM call"""
+        try:
+            usage = response.usage_metadata
+            print(f"📊 [{operation}] Token Usage:")
+            print(f"   Input tokens: {usage.prompt_token_count}")
+            print(f"   Output tokens: {usage.candidates_token_count}")
+            print(f"   Total tokens: {usage.total_token_count}")
+        except Exception as e:
+            print(f"⚠️ Could not retrieve usage metadata: {e}")
+    
+    @staticmethod
     async def extract_profile_from_image(image_bytes: bytes) -> PatientProfile:
         """Extract structured patient profile from an image (report/note) using Gemini Vision"""
         import PIL.Image
@@ -60,6 +72,7 @@ OUTPUT FORMAT (JSON only, no explanation):
 
             response = await model.generate_content_async([prompt, image])
             print("✅ Patient profile extracted from image")
+            LLMService._print_usage(response, "Image Profile Extraction")
             text = response.text.strip()
             
             # Remove markdown code blocks if present
@@ -118,6 +131,7 @@ OUTPUT FORMAT (JSON only, no explanation):
         try:
             response = model.generate_content(prompt)
             print("✅ Patient profile extracted")
+            LLMService._print_usage(response, "Text Profile Extraction")
             text = response.text.strip()
             # Remove markdown code blocks if present
             if text.startswith("```json"):
@@ -173,6 +187,7 @@ OUTPUT FORMAT (JSON only):
         try:
             response = model.generate_content(prompt)
             print("✅ Keywords extracted")
+            LLMService._print_usage(response, "Keyword Extraction")
             text = response.text.strip()
             # Remove markdown code blocks
             if text.startswith("```json"):
@@ -242,6 +257,7 @@ OUTPUT FORMAT (JSON only):
         try:
             response = model.generate_content(prompt)
             print(f"✅ Evaluated: {trial_title[:30]}")
+            LLMService._print_usage(response, "Eligibility Evaluation")
             text = response.text.strip()
             # Remove markdown code blocks
             if text.startswith("```json"):
@@ -322,6 +338,7 @@ OUTPUT FORMAT (JSON array, one object per trial in order):
         try:
             response = model.generate_content(prompt)
             print(f"✅ Batch evaluation complete")
+            LLMService._print_usage(response, "Batch Eligibility Evaluation")
             text = response.text.strip()
             
             # Remove markdown code blocks
@@ -420,6 +437,7 @@ OUTPUT FORMAT (JSON only):
         try:
             response = model.generate_content(prompt)
             print("✅ Transcript analyzed")
+            LLMService._print_usage(response, "Transcript Analysis")
             text = response.text.strip()
             # Remove markdown code blocks
             if text.startswith("```json"):

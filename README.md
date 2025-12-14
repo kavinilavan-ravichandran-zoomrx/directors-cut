@@ -12,6 +12,7 @@ CliniQu acts as an intelligent layer between oncologists and the complex world o
   - **Voice**: Real-time consultation audio.
 - **👂 Ambient Listener**: Runs in the background during consultations. Detects when a patient runs out of standard options and proactively suggests trials.
 - **📊 Chart Peek**: A "Population Health" view to monitor existing patients for new trial opportunities automatically.
+- **📊 Token Usage Tracking**: All LLM calls automatically track and log token usage (input, output, and total tokens) for cost monitoring and transparency.
 
 ## 🛠️ Quick Start
 
