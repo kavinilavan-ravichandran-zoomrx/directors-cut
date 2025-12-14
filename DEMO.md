@@ -1,4 +1,4 @@
-# CliniQ Demo
+# ClinIQ Demo
 
 ## 📺 Video Walkthrough
 
