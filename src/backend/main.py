@@ -600,6 +600,68 @@ async def get_patient_trials(
     }
 
 
+# --- Clinical Radar Endpoints ---
+from clinical_radar_service import ClinicalRadarService
+from fastapi.staticfiles import StaticFiles
+
+# Mount static directory for audio files
+os.makedirs("static/audio", exist_ok=True)
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/api/radar/treatments")
+async def get_monitored_treatments(db: AsyncSession = Depends(get_db)):
+    """Get list of unique treatments currently being monitored across all patients"""
+    treatments = await ClinicalRadarService.get_unique_treatments(db)
+    return {"treatments": treatments, "count": len(treatments)}
+
+@app.post("/api/radar/scan")
+async def run_radar_scan(request: dict, db: AsyncSession = Depends(get_db)):
+    """
+    Trigger an ambient scan, save findings to DB, and return them.
+    """
+    treatments = request.get("treatments")
+    if not treatments:
+        treatments = await ClinicalRadarService.get_unique_treatments(db)
+    
+    # Limit to 5 for demo speed if list is huge
+    treatments = treatments[:5]
+    
+    alerts = []
+    for tx in treatments:
+        alert = await ClinicalRadarService.perform_ambient_search(tx)
+        if alert.get("found_update"):
+            alerts.append(alert)
+    
+    # NEW: Persist alerts
+    if alerts:
+        await ClinicalRadarService.save_alerts(db, alerts)
+        
+    return {"alerts": alerts}
+
+@app.get("/api/radar/alerts")
+async def get_radar_history(db: AsyncSession = Depends(get_db)):
+    """Get all saved radar alerts"""
+    alerts = await ClinicalRadarService.get_alerts(db)
+    # Convert ORM to dicts if needed, or rely on FastAPI ORM serialization
+    return {"alerts": alerts}
+
+@app.post("/api/radar/read")
+async def mark_alerts_read(request: dict, db: AsyncSession = Depends(get_db)):
+    """Mark specific alerts as read (not new)"""
+    ids = request.get("ids", [])
+    await ClinicalRadarService.mark_alerts_as_read(db, ids)
+    return {"success": True}
+
+@app.post("/api/radar/briefing")
+async def generate_briefing(request: dict):
+    """
+    Generate podcast briefing from alerts
+    """
+    alerts = request.get("alerts", [])
+    briefing = await ClinicalRadarService.generate_daily_briefing(alerts)
+    return briefing
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, Boolean, Date, JSON, Fore
 from sqlalchemy.orm import relationship, declarative_base
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any, Union
-from datetime import date
+from datetime import date as dt_date
 
 Base = declarative_base()
 
@@ -102,8 +102,8 @@ class Location(BaseModel):
 
 
 class LocationInput(BaseModel):
-    city: str
-    country: str = "India"
+    city: Optional[str] = None
+    country: Optional[str] = "India"
     lat: Optional[float] = None
     lng: Optional[float] = None
 
@@ -122,7 +122,7 @@ class Trial(BaseModel):
     sex: str
     locations: List[Location]
     sponsor: str
-    last_updated: date
+    last_updated: dt_date
 
 
 class PatientProfile(BaseModel):
@@ -224,3 +224,41 @@ class UpdatePatientProfileRequest(BaseModel):
     prior_treatments: Optional[List[str]] = None
     current_treatments: Optional[List[str]] = None
     biomarkers: Optional[Dict[str, Any]] = None
+
+
+# Radar Alert Models
+class RadarAlertORM(Base):
+    __tablename__ = "radar_alerts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    drug = Column(String, nullable=False)
+    category = Column(String, nullable=False)  # ADVERSE_EVENT, REGULATORY, etc.
+    severity = Column(String, nullable=False)
+    title = Column(String, nullable=False)
+    description = Column(String)
+    source = Column(String)
+    source_url = Column(String, nullable=True)
+    date = Column(String)
+    is_new = Column(Boolean, default=True)
+    created_at = Column(Date, default=dt_date.today)
+
+
+class RadarAlert(BaseModel):
+    id: Optional[int] = None
+    drug: str
+    category: str
+    severity: str
+    title: str
+    description: str
+    source: str
+    source_url: Optional[str] = None
+    date: str
+    is_new: bool = True
+    
+    class Config:
+        from_attributes = True
+
+
+class RadarAlertCreate(RadarAlert):
+    pass
+

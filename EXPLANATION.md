@@ -1,11 +1,11 @@
-# TrialSense: Technical Explanation
+# CliniQu: Technical Explanation
 
 ## The Problem
 Clinical trial matching is historically manual, time-consuming, and error-prone. Oncologists struggle to keep up with thousands of active trials, and rigid database queries fail to capture the nuance of patient eligibility criteria (e.g., "adequate organ function" or specific prior therapy sequences).
 
 ## The Solution: AI-First Pipeline
 
-TrialSense uses a multi-step AI pipeline to automate this process.
+CliniQu uses a multi-step AI pipeline to automate this process.
 
 ### 1. Unstructured Data Extraction
 The system does not require manual data entry. Instead, it accepts:
@@ -22,7 +22,7 @@ Before costly LLM evaluation, we perform a broad search against the ClinicalTria
 - **Filtering**: We filter by phase, recruitment status, and location to narrow down from thousands to a manageable set (e.g., top 10-20 candidates).
 
 ### 3. Semantic Eligibility Matching (The Core Innovation)
-Standard search matches keywords. TrialSense matches **logic**.
+Standard search matches keywords. CliniQu matches **logic**.
 
 We feed the `PatientProfile` and the raw `Eligibility Criteria` text of the candidate trials into Gemini. The model acts as a reasoning engine:
 1. **Inclusion Check**: Does the patient's data satisfy the inclusion list?

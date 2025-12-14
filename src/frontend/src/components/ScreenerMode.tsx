@@ -66,8 +66,15 @@ export default function ScreenerMode() {
         try {
             const audioBlob = await new Promise<Blob>((resolve) => {
                 const mediaRecorder = mediaRecorderRef.current!;
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        audioChunksRef.current.push(event.data);
+                    }
+                };
+                
                 mediaRecorder.onstop = () => {
-                    const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+                    const blob = new Blob(audioChunksRef.current, { type: 'audio/webm;codecs=opus' });
                     resolve(blob);
                 };
                 mediaRecorder.stop();

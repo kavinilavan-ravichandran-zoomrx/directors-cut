@@ -8,3 +8,5 @@ pydantic-settings==2.1.0
 geopy==2.4.1
 python-dotenv==1.0.0
 aiosqlite==0.19.0
+gtts
+openai

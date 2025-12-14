@@ -12,7 +12,7 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
 
-model = genai.GenerativeModel('gemini-2.5-pro')
+model = genai.GenerativeModel('gemini-3-pro-preview')
 
 class LLMService:
     """Service for all LLM-powered operations using Gemini"""
@@ -55,7 +55,7 @@ OUTPUT FORMAT (JSON only, no explanation):
   "sex": null,
   "cns_involvement": null,
   "metastatic_sites": [],
-  "location": {"city": "", "country": "India"}
+  "location": {"city": null, "country": "India"}
 }"""
 
             response = await model.generate_content_async([prompt, image])

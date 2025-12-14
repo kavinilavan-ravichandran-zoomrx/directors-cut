@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import './index.css';
 import ScreenerMode from './components/ScreenerMode';
-import ListenerMode from './components/ListenerMode';
+import ClinicalRadarMode from './components/ClinicalRadarMode';
 import ChartPeekMode from './components/ChartPeekMode';
-import { Activity, Ear, FileText } from 'lucide-react';
+import { Activity, Radio, FileText } from 'lucide-react';
 
-type Mode = 'screener' | 'listener' | 'chart';
+type Mode = 'screener' | 'radar' | 'chart';
 
 function App() {
   console.log('App component rendering');
@@ -57,12 +57,12 @@ function App() {
               Screener
             </button>
             <button
-              className={`btn ${currentMode === 'listener' ? 'btn-primary' : 'btn-secondary'}`}
-              onClick={() => setCurrentMode('listener')}
+              className={`btn ${currentMode === 'radar' ? 'btn-primary' : 'btn-secondary'}`}
+              onClick={() => setCurrentMode('radar')}
               style={{ padding: 'var(--spacing-md) var(--spacing-lg)' }}
             >
-              <Ear size={18} />
-              Listener
+              <Radio size={18} />
+              Clinical Radar
             </button>
             <button
               className={`btn ${currentMode === 'chart' ? 'btn-primary' : 'btn-secondary'}`}
@@ -80,7 +80,7 @@ function App() {
       <main className="container" style={{ paddingBottom: 'var(--spacing-2xl)' }}>
         <div className="fade-in">
           {currentMode === 'screener' && <ScreenerMode />}
-          {currentMode === 'listener' && <ListenerMode />}
+          {currentMode === 'radar' && <ClinicalRadarMode />}
           {currentMode === 'chart' && <ChartPeekMode />}
         </div>
       </main>

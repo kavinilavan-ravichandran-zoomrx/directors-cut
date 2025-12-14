@@ -1,8 +1,8 @@
-# TrialSense Architecture
+# CliniQu Architecture
 
 ## High-Level Overview
 
-TrialSense is a full-stack automated clinical trial matching system designed to bridge the gap between oncology patients and suitable clinical trials. It leverages generative AI for unstructured data extraction and semantic matching.
+CliniQu is a full-stack automated clinical trial matching system designed to bridge the gap between oncology patients and suitable clinical trials. It leverages generative AI for unstructured data extraction and semantic matching.
 
 ```mermaid
 graph TD

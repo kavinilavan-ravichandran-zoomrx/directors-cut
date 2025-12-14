@@ -10,6 +10,7 @@ env_path = Path(__file__).parent / ".env"
 print(env_path)
 load_dotenv(dotenv_path=env_path)
 print(os.getenv("OPENAI_API_KEY"))
+
 class TranscriptionService:
     """Service for audio transcription using OpenAI Whisper"""
     
@@ -20,15 +21,14 @@ class TranscriptionService:
         """Get or create OpenAI client"""
         if cls._client is None:
             # Try reloading if not found
-            if not os.getenv("OPENAI_API_KEY"):
-                load_dotenv(dotenv_path=env_path)
+            # if not os.getenv("OPENAI_API_KEY"):
+            load_dotenv(dotenv_path=env_path)
             
             api_key = os.getenv("OPENAI_API_KEY")
             
             if not api_key:
                 print("❌ OPENAI_API_KEY not found in environment variables")
                 print(f"Checked .env at: {env_path}")
-                # We raise here, ensuring failure only happens when transcription is attempted
                 raise ValueError("OPENAI_API_KEY environment variable not set. Please add it to your .env file to use transcription features.")
                 
             cls._client = OpenAI(api_key=api_key)
@@ -50,6 +50,10 @@ class TranscriptionService:
         try:
             client = TranscriptionService.get_client()
             
+            # Validate audio data size
+            if len(audio_data) < 1000:
+                raise ValueError(f"Audio file too small ({len(audio_data)} bytes). Please record for at least 1-2 seconds.")
+            
             # Determine file extension
             ext = filename.split(".")[-1] if "." in filename else "webm"
             
@@ -66,7 +70,7 @@ class TranscriptionService:
                     transcript = client.audio.transcriptions.create(
                         model="whisper-1",
                         file=audio_file,
-                        language="en",  # Optimize for English
+                        language="en",
                         response_format="text"
                     )
                 

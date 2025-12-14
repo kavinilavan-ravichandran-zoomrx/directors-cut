@@ -1,10 +1,8 @@
-# TrialSense Demo
+# CliniQu Demo
 
 ## 📺 Video Walkthrough
 
-**[Link to Demo Video](YOUR_YOUTUBE_LINK_HERE)**
-
-*(Please insert the actual link to your YouTube/Loom video here)*
+**[Link to Demo Video](https://drive.google.com/file/d/1D9thl252AK78vtqx37DSx-HoH5s07Ry3/view?pli=1)**
 
 ## ⏱️ Timestamp Highlights
 
